@@ -1,0 +1,22 @@
+<!-- Modal -->
+<div class="modal fade" id="modalImagen" tabindex="-1" role="dialog" aria-labelledby="modalImagenTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalImagenTitle">Modal title</h5>
+        <button (click)="this._modalUploadService.ocultarModal()" type="button" class="close pointer" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <img *ngIf="!this.imagenTemp" [src]="'xxx' | imagen" class="w150px">
+        <img *ngIf="this.imagenTemp" [src]="this.imagenTemp" class="w150px">
+        <input (change)="this.seleccionImagen($event.target.files[0])" type="file">
+      </div>
+      <div class="modal-footer">
+        <button [disabled]="!this.imagenTemp" (click)="this.subirImagen()" type="button" class="btn btn-primary">Subir imagen</button>
+        <button (click)="this._modalUploadService.ocultarModal()" type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

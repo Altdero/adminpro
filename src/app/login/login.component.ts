@@ -2,7 +2,7 @@ import { Component, OnInit, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { UsuarioService } from '../services/service.index';
-import { Usuario } from '../models/usuario.models';
+import { Usuario } from '../models/usuario.model';
 
 import swal from 'sweetalert2'; // ---> Librería para las alertas visuales
 

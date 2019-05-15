@@ -19,6 +19,11 @@ import { PromisesComponent } from './promises/promises.component';
 import { RxjsComponent } from './rxjs/rxjs.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { ProfileComponent } from './profile/profile.component';
+import { UsuariosComponent } from './usuarios/usuarios.component';
+import { ModalUploadComponent } from '../components/modal-upload/modal-upload.component';
+import { HospitalesComponent } from './hospitales/hospitales.component';
+import { MedicosComponent } from './medicos/medicos.component';
+import { MedicoComponent } from './medicos/medico.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +36,12 @@ import { ProfileComponent } from './profile/profile.component';
     PromisesComponent,
     RxjsComponent,
     AccountSettingsComponent,
-    ProfileComponent
+    ProfileComponent,
+    UsuariosComponent,
+    ModalUploadComponent,
+    HospitalesComponent,
+    MedicosComponent,
+    MedicoComponent
   ],
   imports: [
     CommonModule,

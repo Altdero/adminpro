@@ -9,3 +9,21 @@
 .w150px {
   width: 150px;
 }
+
+.w70px {
+  width: 70px;
+}
+
+.img50px {
+  width: 50px;
+}
+
+.fondo-negro {
+  background-color: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+}

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsuarioService } from '../services/service.index';
 import { FormGroup, FormControl, Validators, ValidatorFn } from '@angular/forms';
-import { Usuario } from '../models/usuario.models';
+import { Usuario } from '../models/usuario.model';
 
 import swal from 'sweetalert2';
 declare function blabla(): any; // ---> Inicialización de las funciones del template de Admin Pro

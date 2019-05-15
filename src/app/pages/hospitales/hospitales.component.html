@@ -1,0 +1,61 @@
+<div class="row animated fadeIn">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <input (keyup)="this.buscarHospital(input.value)" #input type="text" class="form-control" placeholder="Buscar hospital">
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row animated fadeIn">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="text-right">
+          <button (click)="this.crearHospital()" type="button" class="btn waves-effect waves-light btn-rounded btn-primary">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Crear hospital
+          </button>
+        </div>
+        <h3 class="card-title">
+          Total de hospitales (<small>{{this.totalHospitales}}</small>)
+        </h3>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Imagen</th>
+              <th>Nombre</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let hospital of this.hospitales">
+              <td class="w70px">
+                <img (click)="this.mostrarModal(hospital._id)" class="img50px pointer" [src]="hospital.img | imagen: 'hospital'">
+              </td>
+              <td>
+                <input [(ngModel)]="hospital.nombre" name="nombre" type="text" class="form-control" placeholder="Nombre del hospital">
+              </td>
+              <td>
+                <button (click)="this.actualizarHospital(hospital)" type="button" class="btn btn-primary">
+                  <i class="fa fa-save" aria-hidden="true"></i>
+                </button>
+                &nbsp;
+                <button (click)="this.borrarHospital(hospital)" type="button" class="btn btn-danger">
+                  <i class="fa fa-trash-o" aria-hidden="true"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <button (click)="this.paginacion(-5)" type="button" class="btn btn-secondary">
+          Anteriores
+        </button>
+        &nbsp;
+        <button (click)="this.paginacion(5)" type="button" class="btn btn-secondary">
+          Siguientes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

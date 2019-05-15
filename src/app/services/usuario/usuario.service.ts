@@ -8,14 +8,14 @@ import { HttpClient } from '@angular/common/http';
 
 import { ArchivoService } from '../archivo/archivo.service';
 
-import { Usuario } from '../../models/usuario.models';
+import { Usuario } from '../../models/usuario.model';
 
 import { URL_SERVICIOS } from '../../config/variables.config';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import swal from 'sweetalert2';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -140,11 +140,15 @@ export class UsuarioService {
    * @param usuario - Contiene los datos del usuario que desea registrarse
    * @returns - Observable de un objeto que contiene la respuesta del back-end
    */
-  crearUsuario(usuario: Usuario): Observable<object> {
+  crearUsuario(usuario: Usuario): Observable<boolean> {
     const url = `${URL_SERVICIOS}/usuario`;
 
     return this.httpClient.post(url, usuario).pipe(
-      map((res: any) => swal.fire('Usuario creado', res.usuario.correo, 'success'))
+      map((res: any) => {
+        Swal.fire('Usuario creado', res.usuario.correo, 'success');
+
+        return true;
+      })
     );
   }
 
@@ -155,13 +159,15 @@ export class UsuarioService {
    * @returns - Observable de un objeto que contiene la respuesta del back-end
    */
   actualizarUsuario(usuario: Usuario): Observable<boolean> {
-    let url = `${URL_SERVICIOS}/usuario/${usuario._id}`;
-    url += '?token=' + this.token;
+    const url = `${URL_SERVICIOS}/usuario/${usuario._id}?token=${this.token}`;
 
     return this.httpClient.put(url, usuario).pipe(
       map((res: any) => {
-        this.guardarLocalStorage(usuario._id, this.token, res.usuario);
-        swal.fire('Usuario actualizado', res.usuario.nombre, 'success');
+        if (usuario._id === this.usuario._id) {
+          this.guardarLocalStorage(usuario._id, this.token, res.usuario);
+        }
+
+        Swal.fire('Usuario actualizado', res.usuario.nombre, 'success');
 
         return true;
       })
@@ -173,9 +179,35 @@ export class UsuarioService {
       this.usuario.img = res.usuario.img;
       this.guardarLocalStorage(id, this.token, this.usuario);
 
-      swal.fire('Foto actualizada', this.usuario.nombre, 'success');
+      Swal.fire('Foto actualizada', this.usuario.nombre, 'success');
     }).catch((err: any) => {
       console.log(err);
     });
+  }
+
+  cargarUsuarios(desde: number = 0): Observable<object> {
+    const url = `${URL_SERVICIOS}/usuario?desde=${desde}`;
+
+    return this.httpClient.get(url);
+  }
+
+  buscarUsuarios(termino: string): Observable<Usuario[]> {
+    const url = `${URL_SERVICIOS}/busqueda/coleccion/usuarios/${termino}`;
+
+    return this.httpClient.get(url).pipe(map((res: any) => res.usuarios));
+  }
+
+  borrarUsuario(usuarioId: string): Observable<boolean> {
+    const url = `${URL_SERVICIOS}/usuario/${usuarioId}?token=${this.token}`;
+
+    return this.httpClient.delete(url).pipe(map((res: any) => {
+      Swal.fire(
+        '¡Usuario borrado!',
+        'El usuario se ha borrado correctamente.',
+        'success'
+      );
+
+      return true;
+    }));
   }
 }

@@ -12,7 +12,7 @@ export class ArchivoService {
 
   constructor() { }
 
-  subirArchivo(archivo: File, coleccion: string, id: string) {
+  subirArchivo(archivo: File, coleccion: string, id: string): Promise<any> {
     return new Promise((resolve, reject) => {
       const formData = new FormData();
       const xhr = new XMLHttpRequest();
