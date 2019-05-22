@@ -92,8 +92,8 @@ export class RegisterComponent implements OnInit {
     );
 
     this._usuarioService.crearUsuario(usuario).subscribe(
-      () => this.router.navigate(['/login']),
-      (err: any) => swal.fire('¡Lo sentimos!', err.error.mensaje, 'error')
+      () => this.router.navigate(['/login'])/* ,
+      (err: any) => swal.fire('¡Lo sentimos!', err.error.mensaje, 'error') */
     );
   }
 

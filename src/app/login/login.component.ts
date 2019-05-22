@@ -4,7 +4,7 @@ import { NgForm } from '@angular/forms';
 import { UsuarioService } from '../services/service.index';
 import { Usuario } from '../models/usuario.model';
 
-import swal from 'sweetalert2'; // ---> Librería para las alertas visuales
+import Swal from 'sweetalert2'; // ---> Librería para las alertas visuales
 
 declare function blabla(): any; // ---> Inicialización de las funciones del template de Admin Pro
 declare const gapi: any; // ---> Constante para utilizar la librería de Google SignIn
@@ -54,8 +54,8 @@ export class LoginComponent implements OnInit {
       );
 
       this._usuarioService.login(usuario, forma.value.recuerdame).subscribe(
-        () => this.router.navigate(['/dashboard']),
-        (err: any) => swal.fire('¡Lo sentimos!', err.error.mensaje, 'error')
+        () => this.router.navigate(['/dashboard'])/* ,
+        (err: any) => Swal.fire('¡Lo sentimos!', err.error.mensaje, 'error') */
       );
     }
   }
@@ -78,7 +78,7 @@ export class LoginComponent implements OnInit {
 
       this._usuarioService.loginGoogle(token).subscribe(
         () => this.ngZone.run(() => this.router.navigate(['/dashboard'])).then(),
-        (err: any) => swal.fire('¡Lo sentimos!', err.error.mensaje, 'error')
+        (err: any) => Swal.fire('¡Lo sentimos!', err.error.mensaje, 'error')
       );
     });
   }

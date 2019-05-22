@@ -12,8 +12,9 @@ import { Usuario } from '../../models/usuario.model';
 
 import { URL_SERVICIOS } from '../../config/variables.config';
 
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+// ---> Dependiendo del tipo de manejo de errores que se haga, se usa "throwError" u "of"
+import { Observable, /* throwError, */ of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 import Swal from 'sweetalert2';
 
@@ -24,6 +25,7 @@ export class UsuarioService {
 
   usuario: Usuario;
   token: string;
+  menu: any[] = [];
 
   /**
    * Crea una instancia de UsuarioService.
@@ -46,14 +48,17 @@ export class UsuarioService {
    * @param id - ID del usuario
    * @param token - Tóken generado en las funciones de login
    * @param usuario - Datos del usuario logeado
+   * @param menu - Menú del usuario logeado
    */
-  guardarLocalStorage(id: string, token: string, usuario: Usuario): void {
+  guardarLocalStorage(id: string, token: string, usuario: Usuario, menu: any): void {
     localStorage.setItem('id', id);
     localStorage.setItem('token', token);
     localStorage.setItem('usuario', JSON.stringify(usuario));
+    localStorage.setItem('menu', JSON.stringify(menu));
 
     this.usuario = usuario;
     this.token = token;
+    this.menu = menu;
   }
 
   /**
@@ -62,10 +67,12 @@ export class UsuarioService {
   cargarLocalStorage(): void {
     this.token = '';
     this.usuario = null;
+    this.menu = [];
 
     if (localStorage.getItem('token')) {
       this.token = localStorage.getItem('token');
       this.usuario = JSON.parse(localStorage.getItem('usuario'));
+      this.menu = JSON.parse(localStorage.getItem('menu'));
     }
   }
 
@@ -84,9 +91,11 @@ export class UsuarioService {
   logout(): void {
     this.token = '';
     this.usuario = null;
+    this.menu = [];
 
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
+    localStorage.removeItem('menu');
 
     this.router.navigate(['/login']);
   }
@@ -109,9 +118,20 @@ export class UsuarioService {
 
     return this.httpClient.post(url, usuario).pipe(
       map((res: any) => {
-        this.guardarLocalStorage(res.id, res.token, res.usuario);
+        this.guardarLocalStorage(res.id, res.token, res.usuario, res.menu);
 
         return true;
+      }),
+      // ---> En esta forma no importa el tipo de retorno, pero muestra en consola lo que esté dentro del "throwError"
+      /* catchError(err => {
+        Swal.fire('¡Lo sentimos!', err.error.mensaje, 'error');
+        // return throwError(err); // Regresa todo el error completo en la consola
+        return throwError(''); // Regresa un valor en blanco
+      }) */
+      // ---> En esta forma no se muestra todo el error en consola, PREFIERO ESTA FORMA
+      catchError(err => {
+        Swal.fire('¡Lo sentimos!', err.error.mensaje, 'error');
+        return of(false); // Si no se especifica el tipo de retorno, puede quedar vacío
       })
     );
   }
@@ -127,7 +147,7 @@ export class UsuarioService {
 
     return this.httpClient.post(url, { token }).pipe(
       map((res: any) => {
-        this.guardarLocalStorage(res.id, res.token, res.usuario);
+        this.guardarLocalStorage(res.id, res.token, res.usuario, res.menu);
 
         return true;
       })
@@ -148,6 +168,10 @@ export class UsuarioService {
         Swal.fire('Usuario creado', res.usuario.correo, 'success');
 
         return true;
+      }),
+      catchError(err => {
+        Swal.fire(err.error.mensaje, err.error.errors.message, 'error');
+        return of(false); // Si no se especifica el tipo de retorno, puede quedar vacío
       })
     );
   }
@@ -164,12 +188,16 @@ export class UsuarioService {
     return this.httpClient.put(url, usuario).pipe(
       map((res: any) => {
         if (usuario._id === this.usuario._id) {
-          this.guardarLocalStorage(usuario._id, this.token, res.usuario);
+          this.guardarLocalStorage(usuario._id, this.token, res.usuario, this.menu);
         }
 
         Swal.fire('Usuario actualizado', res.usuario.nombre, 'success');
 
         return true;
+      }),
+      catchError(err => {
+        Swal.fire(err.error.mensaje, err.error.errors.message, 'error');
+        return of(false); // Si no se especifica el tipo de retorno, puede quedar vacío
       })
     );
   }
@@ -177,7 +205,7 @@ export class UsuarioService {
   actualizarFoto(archivo: File, id: string): void {
     this._archivoService.subirArchivo(archivo, 'usuarios', id).then((res: any) => {
       this.usuario.img = res.usuario.img;
-      this.guardarLocalStorage(id, this.token, this.usuario);
+      this.guardarLocalStorage(id, this.token, this.usuario, this.menu);
 
       Swal.fire('Foto actualizada', this.usuario.nombre, 'success');
     }).catch((err: any) => {

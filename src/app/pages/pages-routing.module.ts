@@ -6,7 +6,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { LoginGuard } from '../services/service.index';
+import { LoginGuard, AdminGuard } from '../services/service.index';
 
 import { PagesComponent } from './pages.component';
 
@@ -18,6 +18,8 @@ import { RxjsComponent } from './rxjs/rxjs.component';
 import { AccountSettingsComponent } from './account-settings/account-settings.component';
 import { PagenotfoundComponent } from '../shared/pagenotfound/pagenotfound.component';
 import { ProfileComponent } from './profile/profile.component';
+import { BusquedaComponent } from './busqueda/busqueda.component';
+
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { HospitalesComponent } from './hospitales/hospitales.component';
 import { MedicosComponent } from './medicos/medicos.component';
@@ -36,8 +38,16 @@ const routesPages: Routes = [
       { path: 'rxjs', component: RxjsComponent, data: { titulo: 'Observables' } },
       { path: 'account-settings', component: AccountSettingsComponent, data: { titulo: 'Preferencias' } },
       { path: 'perfil', component: ProfileComponent, data: { titulo: 'Perfil de usuario' } },
+      { path: 'busqueda/:termino', component: BusquedaComponent, data: { titulo: 'Buscador' } },
       // ---> Mantenimientos
-      { path: 'usuarios', component: UsuariosComponent, data: { titulo: 'Mantenimiento de usuarios' } },
+      {
+        path: 'usuarios',
+        component: UsuariosComponent,
+        canActivate: [AdminGuard],
+        data: {
+          titulo: 'Mantenimiento de usuarios'
+        }
+      },
       { path: 'hospitales', component: HospitalesComponent, data: { titulo: 'Mantenimiento de hospitales' } },
       { path: 'medicos', component: MedicosComponent, data: { titulo: 'Mantenimiento de médicos' } },
       { path: 'medico/:id', component: MedicoComponent, data: { titulo: 'Mantenimiento de un médico' } },

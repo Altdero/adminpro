@@ -1,0 +1,68 @@
+<div class="row">
+  <div class="col-4">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Usuarios</h4>
+        <table class="table table-striped">
+          <tbody>
+            <tr *ngFor="let usuario of this.usuarios">
+              <td>
+                <img class="img-circle img50px" [src]="usuario.img | imagen">
+              </td>
+              <td>{{usuario.nombre}}</td>
+              <td>
+                <button [routerLink]="['/usuarios']" class="btn btn-primary">
+                  <i class="fa fa-edit"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Médicos</h4>
+        <table class="table table-striped">
+          <tbody>
+            <tr *ngFor="let medico of this.medicos">
+              <td>
+                <img class="img-circle img50px" [src]="medico.img | imagen: 'medico'">
+              </td>
+              <td>{{medico.nombre}}</td>
+              <td>
+                <button [routerLink]="['/medico', medico._id]" class="btn btn-primary">
+                  <i class="fa fa-edit"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Hospitales</h4>
+        <table class="table table-striped">
+          <tbody>
+            <tr *ngFor="let hospital of this.hospitales">
+              <td>
+                <img class="img50px" [src]="hospital.img | imagen: 'hospital'">
+              </td>
+              <td>{{hospital.nombre}}</td>
+              <td>
+                <button [routerLink]="['/hospitales']" class="btn btn-primary">
+                  <i class="fa fa-edit"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
