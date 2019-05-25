@@ -8,6 +8,7 @@ import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { HeaderComponent } from './header/header.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
+import { ModalUploadComponent } from '../components/modal-upload/modal-upload.component';
 
 @NgModule({
   imports: [
@@ -19,13 +20,15 @@ import { BreadcrumbsComponent } from './breadcrumbs/breadcrumbs.component';
     PagenotfoundComponent,
     HeaderComponent,
     SidebarComponent,
-    BreadcrumbsComponent
+    BreadcrumbsComponent,
+    ModalUploadComponent
   ],
   exports: [
     PagenotfoundComponent,
     HeaderComponent,
     SidebarComponent,
-    BreadcrumbsComponent
+    BreadcrumbsComponent,
+    ModalUploadComponent
   ]
 })
 export class SharedModule { }

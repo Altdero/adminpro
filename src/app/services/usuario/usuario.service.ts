@@ -154,6 +154,26 @@ export class UsuarioService {
     );
   }
 
+  renuevaToken() {
+    const url = `${URL_SERVICIOS}/login/renuevatoken?token=${this.token}`;
+
+    return this.httpClient.get(url).pipe(
+      map((res: any) => {
+        this.token = res.token;
+        localStorage.setItem('token', this.token);
+        console.log('Tóken renovado');
+
+        return true;
+      }),
+      catchError(err => {
+        Swal.fire('¡Lo sentimos!', 'No fue posible renovar el tóken', 'error');
+        this.router.navigate(['/login']);
+
+        return of(false); // Si no se especifica el tipo de retorno, puede quedar vacío
+      })
+    );
+  }
+
   /**
    * Envía la petición al back-end para crear un usuario con los datos de la pantalla de registro
    *
